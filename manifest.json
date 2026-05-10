@@ -1,0 +1,14 @@
+{
+  "name": "CNC Guide — Lowrider V4",
+  "short_name": "CNC Guide",
+  "description": "CNC machining guide for V1 Engineering Lowrider V4 with Jackpot controller and Kress 800",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e40af",
+  "orientation": "any",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

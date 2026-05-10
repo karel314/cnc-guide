@@ -1,0 +1,75 @@
+[
+  {
+    "id": "softwood",
+    "name": "Softwood (Pine, Cedar, Spruce)",
+    "category": "wood",
+    "settings": [
+      {"bit_id": 3, "dial": "2-3", "rpm": "~16,000", "feed": 750, "feed_max": 1000, "plunge": 250, "depth": 3, "depth_max": 4, "notes": "Watch for tearout on soft grain"},
+      {"bit_id": 1, "dial": "2-3", "rpm": "~16,000", "feed": 1200, "feed_max": 1800, "plunge": 400, "depth": 4, "depth_max": 6, "notes": "Can be more aggressive with 1/4\" bit"}
+    ]
+  },
+  {
+    "id": "hardwood",
+    "name": "Hardwood (Oak, Maple, Walnut, Beech)",
+    "category": "wood",
+    "settings": [
+      {"bit_id": 3, "dial": "2-3", "rpm": "~16,000", "feed": 500, "feed_max": 750, "plunge": 180, "depth": 1.5, "depth_max": 2.5, "notes": "Lighter passes, listen for chatter"},
+      {"bit_id": 1, "dial": "2-3", "rpm": "~16,000", "feed": 800, "feed_max": 1200, "plunge": 300, "depth": 2, "depth_max": 4, "notes": "Reduce feed if chatter occurs"}
+    ]
+  },
+  {
+    "id": "plywood",
+    "name": "Plywood (Baltic Birch, Marine, etc.)",
+    "category": "wood",
+    "settings": [
+      {"bit_id": 1, "dial": "2-3", "rpm": "~16,000", "feed": 1000, "feed_max": 1500, "plunge": 300, "depth": 3, "depth_max": 5, "notes": "Downcut gives clean top surface"},
+      {"bit_id": 3, "dial": "2-3", "rpm": "~16,000", "feed": 600, "feed_max": 900, "plunge": 200, "depth": 2, "depth_max": 3, "notes": "Upcut: good chip clearing but fuzzy top edge"},
+      {"bit_id": 2, "dial": "2-3", "rpm": "~16,000", "feed": 600, "feed_max": 900, "plunge": 200, "depth": 2, "depth_max": 3, "notes": "Small downcut for detail work in plywood"}
+    ]
+  },
+  {
+    "id": "mdf",
+    "name": "MDF",
+    "category": "wood",
+    "warning": "MDF dust is carcinogenic! Use dust collection AND a proper respirator (not just a paper mask).",
+    "settings": [
+      {"bit_id": 1, "dial": "2-3", "rpm": "~16,000", "feed": 1200, "feed_max": 1800, "plunge": 400, "depth": 3, "depth_max": 6, "notes": "Very dusty, keep vacuum running"},
+      {"bit_id": 3, "dial": "2-3", "rpm": "~16,000", "feed": 700, "feed_max": 1000, "plunge": 250, "depth": 2, "depth_max": 4, "notes": "Upcut helps clear the fine dust"}
+    ]
+  },
+  {
+    "id": "acrylic",
+    "name": "Acrylic (Cast)",
+    "category": "plastic",
+    "warning": "Use LOWEST RPM possible! Acrylic melts easily. Leave protective film on.",
+    "settings": [
+      {"bit_id": 3, "dial": "1", "rpm": "~10,000", "feed": 800, "feed_max": 1200, "plunge": 200, "depth": 1, "depth_max": 2, "notes": "Lowest RPM, feed fast to prevent melting. O-flute would be better (not in inventory)."}
+    ]
+  },
+  {
+    "id": "hdpe",
+    "name": "HDPE",
+    "category": "plastic",
+    "warning": "Use lowest RPM. Feed fast to prevent melting.",
+    "settings": [
+      {"bit_id": 3, "dial": "1", "rpm": "~10,000", "feed": 1000, "feed_max": 1500, "plunge": 300, "depth": 2, "depth_max": 3, "notes": "Feed fast, chips should be curly not gummy"}
+    ]
+  },
+  {
+    "id": "aluminum",
+    "name": "Aluminum (6061)",
+    "category": "metal",
+    "warning": "At the limit of the LR4's capability. Use cutting fluid (WD-40 or isopropyl). Secure workpiece EXTREMELY well. Consider this advanced.",
+    "settings": [
+      {"bit_id": 3, "dial": "1", "rpm": "~10,000", "feed": 300, "feed_max": 500, "plunge": 60, "plunge_max": 100, "depth": 0.3, "depth_max": 0.5, "notes": "Very shallow passes. Use cutting fluid. Trochoidal/adaptive toolpaths recommended."}
+    ]
+  },
+  {
+    "id": "foam",
+    "name": "Foam (XPS, EPS, EVA)",
+    "category": "foam",
+    "settings": [
+      {"bit_id": 3, "dial": "1", "rpm": "~10,000", "feed": 1500, "feed_max": 2500, "plunge": 500, "depth": 5, "depth_max": 10, "notes": "Easy to cut. Low RPM to avoid melting. Great for test cuts!"}
+    ]
+  }
+]

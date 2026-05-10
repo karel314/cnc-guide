@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNC Guide — Lowrider V4</title>
+  <meta name="description" content="CNC machining guide for V1 Engineering Lowrider V4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CNC Guide">
+  <meta name="theme-color" content="#1e40af">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NAV -->
+  <nav id="main-nav">
+    <button class="nav-btn active" data-screen="home">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-btn" data-screen="wizard">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>New Job</span>
+    </button>
+    <button class="nav-btn" data-screen="bits">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      <span>My Bits</span>
+    </button>
+    <button class="nav-btn" data-screen="reference">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span>Reference</span>
+    </button>
+  </nav>
+
+  <!-- HOME SCREEN -->
+  <main id="screen-home" class="screen active">
+    <div class="hero">
+      <div class="hero-icon">
+        <svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="8" y="40" width="48" height="8" rx="2" stroke="#64748b"/>
+          <rect x="4" y="48" width="56" height="12" rx="2" fill="#f1f5f9" stroke="#94a3b8"/>
+          <line x1="32" y1="10" x2="32" y2="38" stroke="#1e40af" stroke-width="3"/>
+          <path d="M28 10 L32 4 L36 10" fill="#1e40af" stroke="#1e40af" stroke-width="2"/>
+          <circle cx="32" cy="38" r="3" fill="#ef4444" stroke="#ef4444"/>
+        </svg>
+      </div>
+      <h1>CNC Guide</h1>
+      <p class="subtitle">Lowrider V4 &middot; Jackpot &middot; Kress 800</p>
+    </div>
+
+    <div class="card-grid">
+      <button class="action-card" onclick="showScreen('wizard')">
+        <div class="card-icon new-job-icon">+</div>
+        <h3>New Job</h3>
+        <p>Step-by-step guidance for your next CNC project</p>
+      </button>
+      <button class="action-card" onclick="showScreen('reference')">
+        <div class="card-icon ref-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        </div>
+        <h3>Quick Reference</h3>
+        <p>Feeds & speeds, dial chart, G-code commands</p>
+      </button>
+    </div>
+
+    <div class="safety-banner">
+      <strong>Safety First</strong>
+      <ul>
+        <li>Safety glasses when spindle is running</li>
+        <li>Hearing protection (10k+ RPM is loud)</li>
+        <li>Dust mask — especially with MDF</li>
+        <li>Never leave the machine unattended</li>
+      </ul>
+    </div>
+    <div class="version-label">v1.0 — Lowrider V4</div>
+  </main>
+
+  <!-- WIZARD SCREEN -->
+  <main id="screen-wizard" class="screen">
+    <h2>New CNC Job</h2>
+
+    <!-- Step 1: Material -->
+    <div id="wiz-step-1" class="wiz-step active">
+      <div class="step-header">
+        <span class="step-num">1</span>
+        <h3>What material are you cutting?</h3>
+      </div>
+      <div id="material-list" class="option-list"></div>
+      <div class="form-group" id="thickness-group" style="display:none">
+        <label for="material-thickness">Material thickness (mm)</label>
+        <input type="number" id="material-thickness" min="1" max="50" value="18" step="0.5">
+      </div>
+    </div>
+
+    <!-- Step 2: Operation -->
+    <div id="wiz-step-2" class="wiz-step">
+      <div class="step-header">
+        <span class="step-num">2</span>
+        <h3>What operation?</h3>
+      </div>
+      <div class="option-list">
+        <button class="option-btn" data-op="profile">
+          <strong>Profile / Contour</strong>
+          <span>Cut out a shape (through-cut)</span>
+        </button>
+        <button class="option-btn" data-op="pocket">
+          <strong>Pocket</strong>
+          <span>Remove area to a set depth</span>
+        </button>
+        <button class="option-btn" data-op="vcarve">
+          <strong>V-Carve / Lettering</strong>
+          <span>Engrave text or designs with V-bit</span>
+        </button>
+        <button class="option-btn" data-op="drill">
+          <strong>Drill Holes</strong>
+          <span>Plunge holes at specific points</span>
+        </button>
+        <button class="option-btn" data-op="surface">
+          <strong>Surfacing</strong>
+          <span>Flatten spoilboard or epoxy</span>
+        </button>
+        <button class="option-btn" data-op="engrave">
+          <strong>Line Engraving</strong>
+          <span>Shallow line following with end mill</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Bit Selection -->
+    <div id="wiz-step-3" class="wiz-step">
+      <div class="step-header">
+        <span class="step-num">3</span>
+        <h3>Recommended bit from your inventory</h3>
+      </div>
+      <div id="bit-recommendation"></div>
+    </div>
+
+    <!-- Step 4: Settings Card -->
+    <div id="wiz-step-4" class="wiz-step">
+      <div class="step-header">
+        <span class="step-num">4</span>
+        <h3>Your CNC Settings</h3>
+      </div>
+      <div id="settings-card" class="settings-card"></div>
+      <div id="material-warning" class="warning-box" style="display:none"></div>
+    </div>
+
+    <!-- Step 5: Workflow Checklist -->
+    <div id="wiz-step-5" class="wiz-step">
+      <div class="step-header">
+        <span class="step-num">5</span>
+        <h3>Workflow Checklist</h3>
+      </div>
+      <div id="workflow-checklist"></div>
+    </div>
+
+    <div class="wiz-nav">
+      <button id="wiz-back" class="btn btn-secondary" onclick="wizBack()" style="display:none">Back</button>
+      <button id="wiz-restart" class="btn btn-secondary" onclick="wizRestart()" style="display:none">Start Over</button>
+    </div>
+  </main>
+
+  <!-- BITS SCREEN -->
+  <main id="screen-bits" class="screen">
+    <h2>My Bit Inventory</h2>
+    <div id="bits-list"></div>
+    <div class="missing-bits">
+      <h3>Consider Adding</h3>
+      <ul>
+        <li><strong>Compression bit (1/4")</strong> — Clean both-side cuts in plywood</li>
+        <li><strong>O-flute (1/8")</strong> — Better for plastics (acrylic, HDPE)</li>
+        <li><strong>Ball nose (1/8")</strong> — 3D carving and sculpted surfaces</li>
+        <li><strong>90-degree V-bit</strong> — Wider/bolder lettering</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- REFERENCE SCREEN -->
+  <main id="screen-reference" class="screen">
+    <h2>Quick Reference</h2>
+
+    <details class="ref-section" open>
+      <summary>Kress 800 Speed Dial</summary>
+      <table class="ref-table">
+        <thead><tr><th>Dial</th><th>RPM</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>~10,000</td><td>Aluminum, plastics, large bits</td></tr>
+          <tr><td>1.5</td><td>~11,900</td><td>Delrin, soft plastics</td></tr>
+          <tr><td>2</td><td>~13,800</td><td>Wood with 1/4" bits, hardwood</td></tr>
+          <tr><td>2.5</td><td>~15,700</td><td>Plywood, MDF with 1/4" bits</td></tr>
+          <tr><td>3</td><td>~17,600</td><td>Wood with 1/8" bits</td></tr>
+          <tr><td>3.5</td><td>~19,500</td><td>Softwood, faster cuts</td></tr>
+          <tr><td>4</td><td>~21,400</td><td>Fine detail / engraving</td></tr>
+          <tr><td>5</td><td>~25,200</td><td>Very small bits (&lt;2mm)</td></tr>
+          <tr><td>6</td><td>~29,000</td><td>Rarely needed</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details class="ref-section">
+      <summary>Jackpot G-Code Commands</summary>
+      <table class="ref-table">
+        <thead><tr><th>Command</th><th>Function</th></tr></thead>
+        <tbody>
+          <tr><td><code>$H</code></td><td>Home all axes</td></tr>
+          <tr><td><code>$HX/$HY/$HZ</code></td><td>Home individual axis</td></tr>
+          <tr><td><code>$X</code></td><td>Clear alarm / unlock</td></tr>
+          <tr><td><code>G92 X0 Y0</code></td><td>Set X/Y zero (volatile)</td></tr>
+          <tr><td><code>G10 L20 P1 X0 Y0 Z0</code></td><td>Set zero (persistent)</td></tr>
+          <tr><td><code>G38.2 Z-25 F100 P[t]</code></td><td>Z-probe (t=plate thickness mm)</td></tr>
+          <tr><td><code>$J=X10 F500</code></td><td>Jog X +10mm at 500mm/min</td></tr>
+          <tr><td><code>?</code></td><td>Status report</td></tr>
+          <tr><td><code>!</code></td><td>Feed hold (PAUSE)</td></tr>
+          <tr><td><code>~</code></td><td>Resume</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details class="ref-section">
+      <summary>Chip Quality Guide</summary>
+      <table class="ref-table">
+        <thead><tr><th>Chips Look Like</th><th>Meaning</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Small clean curls</td><td>Settings are good</td><td>Keep going!</td></tr>
+          <tr><td>Fine dust</td><td>Feed too slow / RPM too high</td><td>Increase feed or lower dial</td></tr>
+          <tr><td>Melted/gummy</td><td>RPM too high (plastics)</td><td>Lower dial, increase feed</td></tr>
+          <tr><td>Large chunks + vibration</td><td>Too aggressive</td><td>Reduce depth or feed</td></tr>
+          <tr><td>Burnt edges</td><td>Too much heat</td><td>Lower dial or increase feed</td></tr>
+          <tr><td>Chattering/squealing</td><td>Too deep or dull bit</td><td>Reduce depth, check bit</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details class="ref-section">
+      <summary>Z-Probe Procedure</summary>
+      <ol class="ref-steps">
+        <li>Clip ground wire to the bit</li>
+        <li>Place touchplate on TOP of workpiece</li>
+        <li>Send: <code>G38.2 Z-25 F100 P[thickness]</code></li>
+        <li>Wait for contact — look for <code>[PRB:...:1]</code></li>
+        <li>Remove touchplate and ground wire</li>
+        <li>Jog Z up slightly to verify</li>
+      </ol>
+    </details>
+
+    <details class="ref-section">
+      <summary>Safe Starting Settings (V1E Golden Rule)</summary>
+      <div class="golden-rule">
+        <p>When in doubt, start here:</p>
+        <ul>
+          <li><strong>Bit:</strong> 1/8" single-flute upcut (your NR 3)</li>
+          <li><strong>Feed:</strong> 480 mm/min</li>
+          <li><strong>Plunge:</strong> 180 mm/min</li>
+          <li><strong>Depth/pass:</strong> 1-2mm</li>
+          <li><strong>Kress dial:</strong> 2-3</li>
+        </ul>
+        <p>Works on almost everything. Increase after you see good chips.</p>
+      </div>
+    </details>
+
+    <details class="ref-section">
+      <summary>Workholding Methods</summary>
+      <table class="ref-table">
+        <thead><tr><th>Method</th><th>Best For</th><th>Strength</th></tr></thead>
+        <tbody>
+          <tr><td>Tape + CA glue</td><td>Thin stock, no holes wanted</td><td>Medium</td></tr>
+          <tr><td>Wood screws</td><td>Sheet goods, large pieces</td><td>Very strong</td></tr>
+          <tr><td>Edge clamps</td><td>Quick setup, repeated jobs</td><td>Strong</td></tr>
+          <tr><td>Double-sided tape</td><td>Large flat pieces, light cuts</td><td>Light</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details class="ref-section">
+      <summary>Collet Quick Reference</summary>
+      <table class="ref-table">
+        <thead><tr><th>Collet</th><th>Bits</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>3.175mm (1/8")</td><td>NR 2, NR 3</td><td>Check if owned</td></tr>
+          <tr><td>6.35mm (1/4")</td><td>NR 1, NR 5</td><td>Check if owned</td></tr>
+          <tr><td>8mm</td><td>NR 4 (V-bit)</td><td>Included with Kress</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </main>
+
+  <script src="app.js"></script>
+  <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');</script>
+</body>
+</html>
