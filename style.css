@@ -413,10 +413,109 @@ body {
 }
 
 /* BITS SCREEN */
-#screen-bits h2 {
-  font-size: 1.4rem;
+.bits-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
+}
+.bits-header h2 {
+  font-size: 1.4rem;
   color: var(--primary);
+  margin: 0;
+}
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+/* Bit Form */
+.bit-form-container {
+  margin-bottom: 16px;
+}
+.bit-form {
+  background: var(--card);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(30,64,175,0.1);
+}
+.bit-form h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.bit-form .form-group {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.bit-form .form-group + .form-group {
+  margin-top: 12px;
+}
+.bit-form input,
+.bit-form select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--card);
+}
+.bit-form input:focus,
+.bit-form select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+.bit-form label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-light);
+}
+.form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* Bit card actions */
+.bit-card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--bg);
+}
+.btn-icon {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-light);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-icon:hover {
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-color: var(--primary-light);
+}
+.btn-icon.btn-delete:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger);
 }
 .bit-card {
   background: var(--card);

@@ -165,7 +165,93 @@
 
   <!-- BITS SCREEN -->
   <main id="screen-bits" class="screen">
-    <h2>My Bit Inventory</h2>
+    <div class="bits-header">
+      <h2>My Bit Inventory</h2>
+      <button class="btn btn-primary btn-sm" onclick="showAddBitForm()">+ Add Bit</button>
+    </div>
+
+    <!-- Add/Edit Bit Form -->
+    <div id="bit-form-container" class="bit-form-container" style="display:none">
+      <div class="bit-form">
+        <h3 id="bit-form-title">Add New Bit</h3>
+        <input type="hidden" id="bit-edit-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bit-name">Name</label>
+            <input type="text" id="bit-name" placeholder='e.g. 1/4" Compression'>
+          </div>
+          <div class="form-group">
+            <label for="bit-qty">Quantity</label>
+            <input type="number" id="bit-qty" min="1" value="1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bit-type">Type</label>
+            <select id="bit-type">
+              <option value="upcut">Upcut Spiral</option>
+              <option value="downcut">Downcut Spiral</option>
+              <option value="compression">Compression</option>
+              <option value="oflute">O-Flute (Single Flute)</option>
+              <option value="vbit">V-Bit</option>
+              <option value="ballnose">Ball Nose</option>
+              <option value="surfacing">Surfacing / Fly Cutter</option>
+              <option value="straight">Straight Flute</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bit-flutes">Flutes</label>
+            <input type="number" id="bit-flutes" min="1" max="6" value="2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bit-shank">Shank (mm)</label>
+            <select id="bit-shank">
+              <option value="3.175">3.175mm (1/8")</option>
+              <option value="6.35">6.35mm (1/4")</option>
+              <option value="6">6mm</option>
+              <option value="8">8mm</option>
+              <option value="10">10mm</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bit-cut-dia">Cutting Diameter (mm)</label>
+            <input type="number" id="bit-cut-dia" min="0" step="0.1" value="3.175">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bit-flute-len">Flute Length (mm)</label>
+            <input type="number" id="bit-flute-len" min="0" step="0.5" value="17">
+          </div>
+          <div class="form-group">
+            <label for="bit-coating">Coating</label>
+            <input type="text" id="bit-coating" placeholder="e.g. DLC, Nano Blue, None" value="None">
+          </div>
+        </div>
+        <div class="form-row" id="vbit-angle-row" style="display:none">
+          <div class="form-group">
+            <label for="bit-angle">V-Bit Angle (degrees)</label>
+            <select id="bit-angle">
+              <option value="30">30°</option>
+              <option value="60" selected>60°</option>
+              <option value="90">90°</option>
+              <option value="120">120°</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="bit-notes">Notes</label>
+          <input type="text" id="bit-notes" placeholder="What is this bit best for?">
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-secondary" onclick="hideAddBitForm()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveBit()">Save Bit</button>
+        </div>
+      </div>
+    </div>
+
     <div id="bits-list"></div>
     <div class="missing-bits">
       <h3>Consider Adding</h3>

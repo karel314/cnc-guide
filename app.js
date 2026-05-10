@@ -1,19 +1,39 @@
+const STORAGE_KEY = 'cnc-guide-bits';
 let BITS = [];
+let DEFAULT_BITS = [];
 let MATERIALS = [];
 let wizState = { step: 1, material: null, operation: null, selectedBit: null, settings: null };
+
+function loadBits() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) { /* fall through */ }
+  }
+  return null;
+}
+
+function saveBitsToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(BITS));
+}
+
+function getNextBitId() {
+  return BITS.length ? Math.max(...BITS.map(b => b.id)) + 1 : 1;
+}
 
 async function init() {
   const [bitsRes, matsRes] = await Promise.all([
     fetch('./data/bits.json').then(r => r.json()),
     fetch('./data/materials.json').then(r => r.json())
   ]);
-  BITS = bitsRes;
+  DEFAULT_BITS = bitsRes;
+  BITS = loadBits() || [...bitsRes];
   MATERIALS = matsRes;
 
   renderMaterialList();
   renderBitsScreen();
   setupNav();
   setupOperationButtons();
+  setupBitFormToggle();
 }
 
 function setupNav() {
@@ -454,24 +474,154 @@ function renderBitsScreen() {
   list.innerHTML = BITS.map(b => `
     <div class="bit-card">
       <div class="bit-card-header">
-        <h3>${b.name}</h3>
+        <h3>${escHtml(b.name)}</h3>
         <div>
           <span class="bit-nr">NR ${b.id}</span>
           <span class="bit-qty">${b.qty}x</span>
         </div>
       </div>
       <div class="bit-specs">
-        <span>Type: <strong>${b.type}</strong></span>
-        <span>Shank: <strong>${b.shank_label}</strong></span>
-        <span>Cut dia: <strong>${b.cut_diameter_label}</strong></span>
+        <span>Type: <strong>${escHtml(b.type)}</strong></span>
+        <span>Shank: <strong>${escHtml(b.shank_label)}</strong></span>
+        <span>Cut dia: <strong>${escHtml(b.cut_diameter_label)}</strong></span>
         <span>Flutes: <strong>${b.flutes}</strong></span>
-        <span>Coating: <strong>${b.coating}</strong></span>
+        <span>Coating: <strong>${escHtml(b.coating)}</strong></span>
         <span>Collet: <strong>${b.collet_mm}mm</strong></span>
         ${b.flute_length_mm ? `<span>Flute len: <strong>${b.flute_length_mm}mm</strong></span>` : ''}
+        ${b.angle_deg ? `<span>Angle: <strong>${b.angle_deg}°</strong></span>` : ''}
       </div>
-      <div class="bit-notes">${b.notes}</div>
+      <div class="bit-notes">${escHtml(b.notes)}</div>
+      <div class="bit-card-actions">
+        <button class="btn-icon" onclick="editBit(${b.id})">Edit</button>
+        <button class="btn-icon btn-delete" onclick="deleteBit(${b.id})">Delete</button>
+      </div>
     </div>
   `).join('');
+}
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function setupBitFormToggle() {
+  document.getElementById('bit-type').addEventListener('change', (e) => {
+    document.getElementById('vbit-angle-row').style.display =
+      e.target.value === 'vbit' ? 'grid' : 'none';
+  });
+}
+
+function showAddBitForm(editId) {
+  const container = document.getElementById('bit-form-container');
+  const title = document.getElementById('bit-form-title');
+  container.style.display = 'block';
+
+  if (editId !== undefined) {
+    const b = BITS.find(x => x.id === editId);
+    if (!b) return;
+    title.textContent = 'Edit Bit';
+    document.getElementById('bit-edit-id').value = editId;
+    document.getElementById('bit-name').value = b.name;
+    document.getElementById('bit-qty').value = b.qty;
+    document.getElementById('bit-type').value = b.type;
+    document.getElementById('bit-flutes').value = b.flutes;
+    document.getElementById('bit-shank').value = b.shank_mm;
+    document.getElementById('bit-cut-dia').value = b.cut_diameter_mm;
+    document.getElementById('bit-flute-len').value = b.flute_length_mm || 0;
+    document.getElementById('bit-coating').value = b.coating || '';
+    document.getElementById('bit-notes').value = b.notes || '';
+    document.getElementById('bit-angle').value = b.angle_deg || 60;
+    document.getElementById('vbit-angle-row').style.display =
+      b.type === 'vbit' ? 'grid' : 'none';
+  } else {
+    title.textContent = 'Add New Bit';
+    document.getElementById('bit-edit-id').value = '';
+    document.getElementById('bit-name').value = '';
+    document.getElementById('bit-qty').value = 1;
+    document.getElementById('bit-type').value = 'upcut';
+    document.getElementById('bit-flutes').value = 2;
+    document.getElementById('bit-shank').value = '3.175';
+    document.getElementById('bit-cut-dia').value = 3.175;
+    document.getElementById('bit-flute-len').value = 17;
+    document.getElementById('bit-coating').value = 'None';
+    document.getElementById('bit-notes').value = '';
+    document.getElementById('vbit-angle-row').style.display = 'none';
+  }
+
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function hideAddBitForm() {
+  document.getElementById('bit-form-container').style.display = 'none';
+}
+
+function shankLabel(mm) {
+  const labels = { '3.175': '1/8"', '6.35': '1/4"', '6': '6mm', '8': '8mm', '10': '10mm' };
+  return labels[String(mm)] || mm + 'mm';
+}
+
+function cutDiaLabel(mm, type, angle) {
+  if (type === 'vbit') return angle + '°';
+  const labels = { '3.175': '1/8"', '6.35': '1/4"', '25.4': '1"' };
+  return labels[String(mm)] || mm + 'mm';
+}
+
+function saveBit() {
+  const name = document.getElementById('bit-name').value.trim();
+  if (!name) { alert('Please enter a bit name.'); return; }
+
+  const type = document.getElementById('bit-type').value;
+  const shankMm = parseFloat(document.getElementById('bit-shank').value);
+  const cutDia = parseFloat(document.getElementById('bit-cut-dia').value);
+  const angle = type === 'vbit' ? parseInt(document.getElementById('bit-angle').value) : undefined;
+
+  const bit = {
+    name,
+    type,
+    shank_mm: shankMm,
+    shank_label: shankLabel(shankMm),
+    cut_diameter_mm: type === 'vbit' ? 0 : cutDia,
+    cut_diameter_label: cutDiaLabel(cutDia, type, angle),
+    flute_length_mm: parseFloat(document.getElementById('bit-flute-len').value) || 0,
+    flutes: parseInt(document.getElementById('bit-flutes').value) || 2,
+    coating: document.getElementById('bit-coating').value.trim() || 'None',
+    collet_mm: shankMm,
+    qty: parseInt(document.getElementById('bit-qty').value) || 1,
+    notes: document.getElementById('bit-notes').value.trim(),
+    best_for: []
+  };
+
+  if (type === 'vbit') bit.angle_deg = angle;
+
+  const editId = document.getElementById('bit-edit-id').value;
+  if (editId) {
+    const idx = BITS.findIndex(b => b.id === parseInt(editId));
+    if (idx !== -1) {
+      bit.id = parseInt(editId);
+      BITS[idx] = bit;
+    }
+  } else {
+    bit.id = getNextBitId();
+    BITS.push(bit);
+  }
+
+  saveBitsToStorage();
+  renderBitsScreen();
+  hideAddBitForm();
+}
+
+function editBit(id) {
+  showAddBitForm(id);
+}
+
+function deleteBit(id) {
+  const bit = BITS.find(b => b.id === id);
+  if (!bit) return;
+  if (!confirm(`Delete "${bit.name}" (NR ${bit.id})?`)) return;
+  BITS = BITS.filter(b => b.id !== id);
+  saveBitsToStorage();
+  renderBitsScreen();
 }
 
 init();
