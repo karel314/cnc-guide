@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'cnc-guide-v2';
+const CACHE_VERSION = 'cnc-guide-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   './app.js',
   './data/bits.json',
   './data/materials.json',
+  './data/all-bits.json',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'

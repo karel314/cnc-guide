@@ -1,0 +1,309 @@
+[
+  {
+    "id": "upcut-1f-1/8",
+    "name": "1/8\" Single Flute Upcut",
+    "type": "upcut",
+    "shank_mm": 3.175,
+    "shank_label": "1/8\"",
+    "cut_diameter_mm": 3.175,
+    "cut_diameter_label": "1/8\"",
+    "flutes": 1,
+    "notes": "V1 Engineering's recommended starter bit. Best chip evacuation, most forgiving.",
+    "suitability": {
+      "profile":    { "softwood": 8, "hardwood": 8, "plywood": 6, "mdf": 8, "acrylic": 5, "hdpe": 5, "aluminum": 7, "foam": 8 },
+      "pocket":     { "softwood": 8, "hardwood": 7, "plywood": 6, "mdf": 8, "acrylic": 5, "hdpe": 5, "aluminum": 7, "foam": 8 },
+      "drill":      { "softwood": 9, "hardwood": 9, "plywood": 9, "mdf": 9, "acrylic": 7, "hdpe": 7, "aluminum": 8, "foam": 7 },
+      "engrave":    { "softwood": 5, "hardwood": 5, "plywood": 5, "mdf": 5, "acrylic": 4, "hdpe": 4, "aluminum": 4, "foam": 5 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "upcut-2f-1/8",
+    "name": "1/8\" Two Flute Upcut",
+    "type": "upcut",
+    "shank_mm": 3.175,
+    "shank_label": "1/8\"",
+    "cut_diameter_mm": 3.175,
+    "cut_diameter_label": "1/8\"",
+    "flutes": 2,
+    "notes": "Smoother finish than single flute, slightly less chip clearance.",
+    "suitability": {
+      "profile":    { "softwood": 7, "hardwood": 8, "plywood": 6, "mdf": 7, "acrylic": 4, "hdpe": 4, "aluminum": 5, "foam": 7 },
+      "pocket":     { "softwood": 7, "hardwood": 7, "plywood": 6, "mdf": 7, "acrylic": 4, "hdpe": 4, "aluminum": 5, "foam": 7 },
+      "drill":      { "softwood": 8, "hardwood": 8, "plywood": 8, "mdf": 8, "acrylic": 5, "hdpe": 5, "aluminum": 6, "foam": 6 },
+      "engrave":    { "softwood": 5, "hardwood": 5, "plywood": 5, "mdf": 5, "acrylic": 4, "hdpe": 4, "aluminum": 3, "foam": 5 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "upcut-2f-1/4",
+    "name": "1/4\" Two Flute Upcut",
+    "type": "upcut",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 6.35,
+    "cut_diameter_label": "1/4\"",
+    "flutes": 2,
+    "notes": "Faster material removal for larger work. More rigid than 1/8\" bits.",
+    "suitability": {
+      "profile":    { "softwood": 8, "hardwood": 7, "plywood": 6, "mdf": 8, "acrylic": 4, "hdpe": 5, "aluminum": 5, "foam": 8 },
+      "pocket":     { "softwood": 9, "hardwood": 8, "plywood": 7, "mdf": 9, "acrylic": 5, "hdpe": 5, "aluminum": 5, "foam": 8 },
+      "drill":      { "softwood": 7, "hardwood": 7, "plywood": 7, "mdf": 7, "acrylic": 4, "hdpe": 4, "aluminum": 5, "foam": 6 },
+      "engrave":    { "_all": 2 },
+      "surface":    { "_all": 2 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "downcut-2f-1/8",
+    "name": "1/8\" Two Flute Downcut",
+    "type": "downcut",
+    "shank_mm": 3.175,
+    "shank_label": "1/8\"",
+    "cut_diameter_mm": 3.175,
+    "cut_diameter_label": "1/8\"",
+    "flutes": 2,
+    "notes": "Clean top surface. Great for plywood and veneered material. Avoid deep pockets.",
+    "suitability": {
+      "profile":    { "softwood": 6, "hardwood": 6, "plywood": 8, "mdf": 6, "acrylic": 4, "hdpe": 3, "aluminum": 2, "foam": 5 },
+      "pocket":     { "softwood": 5, "hardwood": 5, "plywood": 7, "mdf": 5, "acrylic": 3, "hdpe": 2, "aluminum": 1, "foam": 4 },
+      "drill":      { "_all": 2 },
+      "engrave":    { "softwood": 8, "hardwood": 8, "plywood": 8, "mdf": 8, "acrylic": 5, "hdpe": 5, "aluminum": 3, "foam": 6 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "downcut-2f-1/4",
+    "name": "1/4\" Two Flute Downcut",
+    "type": "downcut",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 6.35,
+    "cut_diameter_label": "1/4\"",
+    "flutes": 2,
+    "notes": "Clean top surface with fast material removal. Great for shallow pockets in hardwood.",
+    "suitability": {
+      "profile":    { "softwood": 7, "hardwood": 7, "plywood": 8, "mdf": 7, "acrylic": 4, "hdpe": 3, "aluminum": 2, "foam": 6 },
+      "pocket":     { "softwood": 7, "hardwood": 8, "plywood": 8, "mdf": 7, "acrylic": 4, "hdpe": 3, "aluminum": 2, "foam": 5 },
+      "drill":      { "_all": 2 },
+      "engrave":    { "softwood": 6, "hardwood": 6, "plywood": 6, "mdf": 6, "acrylic": 3, "hdpe": 3, "aluminum": 2, "foam": 5 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "compression-2f-1/4",
+    "name": "1/4\" Two Flute Compression",
+    "type": "compression",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 6.35,
+    "cut_diameter_label": "1/4\"",
+    "flutes": 2,
+    "notes": "Clean edges on BOTH sides of plywood/laminate. Only works for cuts deeper than ~5mm.",
+    "suitability": {
+      "profile":    { "softwood": 6, "hardwood": 6, "plywood": 10, "mdf": 7, "acrylic": 3, "hdpe": 3, "aluminum": 1, "foam": 3 },
+      "pocket":     { "_all": 3 },
+      "drill":      { "_all": 1 },
+      "engrave":    { "_all": 1 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "compression-2f-1/8",
+    "name": "1/8\" Two Flute Compression",
+    "type": "compression",
+    "shank_mm": 3.175,
+    "shank_label": "1/8\"",
+    "cut_diameter_mm": 3.175,
+    "cut_diameter_label": "1/8\"",
+    "flutes": 2,
+    "notes": "Smaller compression for detailed plywood work. Clean both sides on thin stock.",
+    "suitability": {
+      "profile":    { "softwood": 5, "hardwood": 5, "plywood": 9, "mdf": 6, "acrylic": 3, "hdpe": 3, "aluminum": 1, "foam": 3 },
+      "pocket":     { "_all": 3 },
+      "drill":      { "_all": 1 },
+      "engrave":    { "_all": 1 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "oflute-1f-1/8",
+    "name": "1/8\" Single Flute O-Flute",
+    "type": "oflute",
+    "shank_mm": 3.175,
+    "shank_label": "1/8\"",
+    "cut_diameter_mm": 3.175,
+    "cut_diameter_label": "1/8\"",
+    "flutes": 1,
+    "notes": "Purpose-built for plastics and aluminum. Large flute valley prevents heat buildup and chip welding.",
+    "suitability": {
+      "profile":    { "softwood": 5, "hardwood": 5, "plywood": 4, "mdf": 5, "acrylic": 10, "hdpe": 10, "aluminum": 9, "foam": 6 },
+      "pocket":     { "softwood": 5, "hardwood": 5, "plywood": 4, "mdf": 5, "acrylic": 10, "hdpe": 10, "aluminum": 9, "foam": 6 },
+      "drill":      { "softwood": 5, "hardwood": 5, "plywood": 5, "mdf": 5, "acrylic": 8, "hdpe": 8, "aluminum": 8, "foam": 5 },
+      "engrave":    { "acrylic": 7, "hdpe": 6, "aluminum": 6, "_default": 3 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "oflute-1f-1/4",
+    "name": "1/4\" Single Flute O-Flute",
+    "type": "oflute",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 6.35,
+    "cut_diameter_label": "1/4\"",
+    "flutes": 1,
+    "notes": "Larger O-flute for faster plastic/aluminum cutting. More rigid than 1/8\".",
+    "suitability": {
+      "profile":    { "softwood": 5, "hardwood": 5, "plywood": 4, "mdf": 5, "acrylic": 9, "hdpe": 9, "aluminum": 10, "foam": 6 },
+      "pocket":     { "softwood": 5, "hardwood": 5, "plywood": 4, "mdf": 5, "acrylic": 9, "hdpe": 9, "aluminum": 10, "foam": 6 },
+      "drill":      { "acrylic": 7, "hdpe": 7, "aluminum": 7, "_default": 4 },
+      "engrave":    { "_all": 2 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "vbit-60",
+    "name": "60° V-Bit (Carbide)",
+    "type": "vbit",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 0,
+    "cut_diameter_label": "60°",
+    "flutes": 2,
+    "angle_deg": 60,
+    "notes": "Versatile V-bit. Great for text, inlays, and medium-detail engraving.",
+    "suitability": {
+      "vcarve":     { "softwood": 9, "hardwood": 9, "plywood": 8, "mdf": 9, "acrylic": 6, "hdpe": 5, "aluminum": 3, "foam": 7 },
+      "engrave":    { "softwood": 7, "hardwood": 7, "plywood": 7, "mdf": 7, "acrylic": 5, "hdpe": 4, "aluminum": 3, "foam": 6 },
+      "profile":    { "_all": 0 },
+      "pocket":     { "_all": 0 },
+      "drill":      { "_all": 0 },
+      "surface":    { "_all": 0 }
+    }
+  },
+  {
+    "id": "vbit-90",
+    "name": "90° V-Bit (Carbide)",
+    "type": "vbit",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 0,
+    "cut_diameter_label": "90°",
+    "flutes": 2,
+    "angle_deg": 90,
+    "notes": "Wider, shallower cuts than 60°. Better for bold lettering and large sign work.",
+    "suitability": {
+      "vcarve":     { "softwood": 8, "hardwood": 8, "plywood": 8, "mdf": 8, "acrylic": 6, "hdpe": 5, "aluminum": 3, "foam": 7 },
+      "engrave":    { "softwood": 6, "hardwood": 6, "plywood": 6, "mdf": 6, "acrylic": 4, "hdpe": 4, "aluminum": 2, "foam": 5 },
+      "profile":    { "_all": 0 },
+      "pocket":     { "_all": 0 },
+      "drill":      { "_all": 0 },
+      "surface":    { "_all": 0 }
+    }
+  },
+  {
+    "id": "vbit-30",
+    "name": "30° V-Bit (Carbide)",
+    "type": "vbit",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 0,
+    "cut_diameter_label": "30°",
+    "flutes": 2,
+    "angle_deg": 30,
+    "notes": "Very fine detail. Ideal for inlays and delicate engraving. Fragile tip — plunge slowly.",
+    "suitability": {
+      "vcarve":     { "softwood": 7, "hardwood": 8, "plywood": 7, "mdf": 7, "acrylic": 5, "hdpe": 4, "aluminum": 2, "foam": 6 },
+      "engrave":    { "softwood": 9, "hardwood": 9, "plywood": 8, "mdf": 8, "acrylic": 6, "hdpe": 5, "aluminum": 3, "foam": 7 },
+      "profile":    { "_all": 0 },
+      "pocket":     { "_all": 0 },
+      "drill":      { "_all": 0 },
+      "surface":    { "_all": 0 }
+    }
+  },
+  {
+    "id": "ballnose-1/8",
+    "name": "1/8\" Ball Nose",
+    "type": "ballnose",
+    "shank_mm": 3.175,
+    "shank_label": "1/8\"",
+    "cut_diameter_mm": 3.175,
+    "cut_diameter_label": "1/8\"",
+    "flutes": 2,
+    "notes": "For 3D carving, sculpted surfaces, topographic maps. Requires 3D toolpaths.",
+    "suitability": {
+      "engrave":    { "softwood": 7, "hardwood": 7, "plywood": 6, "mdf": 7, "acrylic": 5, "hdpe": 5, "aluminum": 4, "foam": 8 },
+      "profile":    { "_all": 3 },
+      "pocket":     { "_all": 3 },
+      "drill":      { "_all": 1 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "ballnose-1/4",
+    "name": "1/4\" Ball Nose",
+    "type": "ballnose",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 6.35,
+    "cut_diameter_label": "1/4\"",
+    "flutes": 2,
+    "notes": "Larger ball nose for faster 3D carving with less detail. Good for roughing 3D shapes.",
+    "suitability": {
+      "engrave":    { "softwood": 6, "hardwood": 6, "plywood": 5, "mdf": 6, "acrylic": 4, "hdpe": 4, "aluminum": 3, "foam": 7 },
+      "profile":    { "_all": 3 },
+      "pocket":     { "_all": 3 },
+      "drill":      { "_all": 1 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "surfacing-1in",
+    "name": "1\" Surfacing / Fly Cutter",
+    "type": "surfacing",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 25.4,
+    "cut_diameter_label": "1\"",
+    "flutes": 3,
+    "notes": "For flattening spoilboard and large surfaces. Slow feed, shallow cuts only.",
+    "suitability": {
+      "surface":    { "softwood": 10, "hardwood": 9, "plywood": 9, "mdf": 10, "acrylic": 5, "hdpe": 5, "aluminum": 2, "foam": 7 },
+      "profile":    { "_all": 0 },
+      "pocket":     { "_all": 0 },
+      "drill":      { "_all": 0 },
+      "engrave":    { "_all": 0 },
+      "vcarve":     { "_all": 0 }
+    }
+  },
+  {
+    "id": "straight-1/4",
+    "name": "1/4\" Straight Flute",
+    "type": "straight",
+    "shank_mm": 6.35,
+    "shank_label": "1/4\"",
+    "cut_diameter_mm": 6.35,
+    "cut_diameter_label": "1/4\"",
+    "flutes": 2,
+    "notes": "No helix. Good for foam and soft materials. Poor chip evacuation in hardwood.",
+    "suitability": {
+      "profile":    { "softwood": 4, "hardwood": 3, "plywood": 4, "mdf": 4, "acrylic": 3, "hdpe": 3, "aluminum": 1, "foam": 9 },
+      "pocket":     { "softwood": 4, "hardwood": 3, "plywood": 4, "mdf": 4, "acrylic": 3, "hdpe": 3, "aluminum": 1, "foam": 9 },
+      "drill":      { "_all": 3 },
+      "engrave":    { "_all": 3 },
+      "surface":    { "_all": 1 },
+      "vcarve":     { "_all": 0 }
+    }
+  }
+]

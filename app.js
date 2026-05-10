@@ -1,6 +1,7 @@
 const STORAGE_KEY = 'cnc-guide-bits';
 let BITS = [];
 let DEFAULT_BITS = [];
+let ALL_BITS_CATALOG = [];
 let MATERIALS = [];
 let wizState = { step: 1, material: null, operation: null, selectedBit: null, settings: null };
 
@@ -21,12 +22,14 @@ function getNextBitId() {
 }
 
 async function init() {
-  const [bitsRes, matsRes] = await Promise.all([
+  const [bitsRes, matsRes, catalogRes] = await Promise.all([
     fetch('./data/bits.json').then(r => r.json()),
-    fetch('./data/materials.json').then(r => r.json())
+    fetch('./data/materials.json').then(r => r.json()),
+    fetch('./data/all-bits.json').then(r => r.json())
   ]);
   DEFAULT_BITS = bitsRes;
   BITS = loadBits() || [...bitsRes];
+  ALL_BITS_CATALOG = catalogRes;
   MATERIALS = matsRes;
 
   renderMaterialList();
@@ -87,51 +90,92 @@ function selectOperation(op) {
   }, 300);
 }
 
+function scoreBitForJob(bit, op, matId) {
+  const typeMap = {
+    upcut: ['upcut-1f-1/8', 'upcut-2f-1/8', 'upcut-2f-1/4'],
+    downcut: ['downcut-2f-1/8', 'downcut-2f-1/4'],
+    compression: ['compression-2f-1/4', 'compression-2f-1/8'],
+    oflute: ['oflute-1f-1/8', 'oflute-1f-1/4'],
+    vbit: ['vbit-60', 'vbit-90', 'vbit-30'],
+    ballnose: ['ballnose-1/8', 'ballnose-1/4'],
+    surfacing: ['surfacing-1in'],
+    straight: ['straight-1/4']
+  };
+
+  const candidates = typeMap[bit.type] || [];
+  let bestDiaDiff = Infinity;
+  let bestCatalogEntry = null;
+  for (const cid of candidates) {
+    const entry = ALL_BITS_CATALOG.find(c => c.id === cid);
+    if (!entry) continue;
+    const diaDiff = Math.abs((entry.cut_diameter_mm || 0) - (bit.cut_diameter_mm || 0));
+    if (diaDiff < bestDiaDiff) {
+      bestDiaDiff = diaDiff;
+      bestCatalogEntry = entry;
+    }
+  }
+
+  if (!bestCatalogEntry) return 1;
+
+  const opScores = bestCatalogEntry.suitability[op];
+  if (!opScores) return 0;
+  if (opScores._all !== undefined) return opScores._all;
+  if (opScores[matId] !== undefined) return opScores[matId];
+  if (opScores._default !== undefined) return opScores._default;
+  return 3;
+}
+
+function getCatalogScore(catalogEntry, op, matId) {
+  const opScores = catalogEntry.suitability[op];
+  if (!opScores) return 0;
+  if (opScores._all !== undefined) return opScores._all;
+  if (opScores[matId] !== undefined) return opScores[matId];
+  if (opScores._default !== undefined) return opScores._default;
+  return 3;
+}
+
+function ownsEquivalent(catalogEntry) {
+  return BITS.some(b => {
+    if (b.type !== catalogEntry.type) return false;
+    const diaDiff = Math.abs((b.cut_diameter_mm || 0) - (catalogEntry.cut_diameter_mm || 0));
+    if (catalogEntry.type === 'vbit') {
+      return (b.angle_deg || 60) === (catalogEntry.angle_deg || 60);
+    }
+    return diaDiff < 0.5;
+  });
+}
+
 function recommendBit() {
   const mat = wizState.material;
   const op = wizState.operation;
-  let rec = null;
-  let reason = '';
-  let alternatives = [];
+  const matId = mat ? mat.id : 'softwood';
 
-  if (op === 'vcarve') {
-    rec = BITS.find(b => b.id === 4);
-    reason = 'V-carving requires a V-bit. Your 60-degree V-bit is the right tool for lettering and engraving.';
-  } else if (op === 'surface') {
-    rec = BITS.find(b => b.id === 5);
-    reason = 'Surfacing needs a wide bit for coverage. Your 1" surfacing bit is purpose-built for this.';
-  } else if (op === 'engrave') {
-    rec = BITS.find(b => b.id === 2);
-    reason = 'The small 2mm downcut is perfect for shallow line engraving with clean edges.';
-    alternatives = [BITS.find(b => b.id === 4)];
-  } else if (op === 'drill') {
-    rec = BITS.find(b => b.id === 3);
-    reason = 'Drilling needs an upcut bit to evacuate chips from the hole. Your 1/8" upcut is ideal.';
-  } else if (op === 'pocket') {
-    if (mat && ['hardwood', 'plywood'].includes(mat.id)) {
-      rec = BITS.find(b => b.id === 1);
-      reason = 'The 1/4" downcut gives clean pocket surfaces and keeps chips in the pocket for chip clearing.';
-      alternatives = [BITS.find(b => b.id === 3)];
-    } else {
-      rec = BITS.find(b => b.id === 3);
-      reason = 'The 1/8" upcut has good chip evacuation for pocketing. Use for general materials.';
-      alternatives = [BITS.find(b => b.id === 1)];
-    }
-  } else {
-    if (mat && mat.id === 'plywood') {
-      rec = BITS.find(b => b.id === 1);
-      reason = 'The 1/4" downcut gives a clean top edge on plywood. For clean both sides, you\'d need a compression bit (not in your inventory).';
-      alternatives = [BITS.find(b => b.id === 3)];
-    } else if (mat && mat.id === 'hardwood') {
-      rec = BITS.find(b => b.id === 3);
-      reason = 'The 1/8" upcut with good chip evacuation works well for hardwood profiles. Take lighter passes.';
-      alternatives = [BITS.find(b => b.id === 1)];
-    } else {
-      rec = BITS.find(b => b.id === 3);
-      reason = 'Your workhorse 1/8" upcut is the best general-purpose choice for profile cuts.';
-      alternatives = [BITS.find(b => b.id === 1)];
-    }
-  }
+  const scored = BITS.map(b => ({ bit: b, score: scoreBitForJob(b, op, matId) }))
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  const rec = scored.length > 0 ? scored[0].bit : BITS[0];
+  const recScore = scored.length > 0 ? scored[0].score : 0;
+  const alternatives = scored.slice(1, 3).filter(s => s.score >= 4).map(s => s.bit);
+
+  const typeReasons = {
+    upcut: 'Good chip evacuation pulls debris out of the cut.',
+    downcut: 'Pushes chips down for a clean top surface.',
+    compression: 'Clean edges on both sides of the material.',
+    oflute: 'Large flute valley prevents heat buildup in plastics/aluminum.',
+    vbit: 'V-shaped tip for lettering, engraving, and chamfering.',
+    ballnose: 'Round tip follows 3D contours smoothly.',
+    surfacing: 'Wide cutting diameter covers large areas efficiently.',
+    straight: 'Simple straight cut, good for foam and soft materials.'
+  };
+  const reason = typeReasons[rec.type] || 'Best match from your inventory for this job.';
+
+  const catalogScored = ALL_BITS_CATALOG
+    .map(c => ({ entry: c, score: getCatalogScore(c, op, matId) }))
+    .filter(s => s.score > recScore && !ownsEquivalent(s.entry))
+    .sort((a, b) => b.score - a.score);
+
+  const idealBit = catalogScored.length > 0 ? catalogScored[0] : null;
 
   wizState.selectedBit = rec;
 
@@ -139,25 +183,46 @@ function recommendBit() {
   container.innerHTML = `
     <div class="bit-card" style="border-color: var(--primary); border-width: 2px;">
       <div class="bit-card-header">
-        <h3>${rec.name}</h3>
+        <h3>${escHtml(rec.name)}</h3>
         <div>
           <span class="bit-nr">NR ${rec.id}</span>
           <span class="bit-qty">${rec.qty}x in stock</span>
         </div>
       </div>
       <div class="bit-specs">
-        <span>Shank: <strong>${rec.shank_label}</strong></span>
-        <span>Cut dia: <strong>${rec.cut_diameter_label}</strong></span>
+        <span>Shank: <strong>${escHtml(rec.shank_label)}</strong></span>
+        <span>Cut dia: <strong>${escHtml(rec.cut_diameter_label)}</strong></span>
         <span>Flutes: <strong>${rec.flutes}</strong></span>
         <span>Collet: <strong>${rec.collet_mm}mm</strong></span>
+        ${rec.angle_deg ? `<span>Angle: <strong>${rec.angle_deg}°</strong></span>` : ''}
       </div>
       <p style="font-size:0.85rem; margin-top:8px;">${reason}</p>
+      ${recScore === 0 ? '<p style="font-size:0.8rem; color:var(--danger); margin-top:4px; font-weight:600;">No ideal bit found in your inventory for this job. Consider the suggestion below.</p>' : ''}
     </div>
+
     ${alternatives.length ? `
       <p style="font-size:0.8rem; color: var(--text-light); margin-top:12px;">
-        <strong>Alternative:</strong> ${alternatives.map(a => `${a.name} (NR ${a.id})`).join(', ')}
+        <strong>Also in your inventory:</strong> ${alternatives.map(a => `${escHtml(a.name)} (NR ${a.id})`).join(', ')}
       </p>
     ` : ''}
+
+    ${idealBit ? `
+      <div class="ideal-bit-suggestion">
+        <div class="ideal-bit-header">
+          <span class="ideal-badge">Better bit available</span>
+        </div>
+        <div class="ideal-bit-body">
+          <strong>${escHtml(idealBit.entry.name)}</strong>
+          <p>${escHtml(idealBit.entry.notes)}</p>
+          <div class="ideal-bit-score">
+            Your best: <span class="score-bar"><span class="score-fill" style="width:${recScore * 10}%"></span></span> ${recScore}/10
+            &nbsp;&nbsp;
+            This bit: <span class="score-bar"><span class="score-fill ideal" style="width:${idealBit.score * 10}%"></span></span> ${idealBit.score}/10
+          </div>
+        </div>
+      </div>
+    ` : ''}
+
     <button class="btn btn-primary" style="margin-top:16px; width:100%;" onclick="generateSettings()">
       Generate Settings
     </button>
