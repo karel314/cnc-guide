@@ -1,9 +1,17 @@
 const STORAGE_KEY = 'cnc-guide-bits';
+const SYNC_KEY = 'cnc-guide-sync';
+const GH_API = 'https://api.github.com';
+const BITS_PATH = 'data/bits.json';
 let BITS = [];
 let DEFAULT_BITS = [];
 let ALL_BITS_CATALOG = [];
 let MATERIALS = [];
+let fileSha = null;
 let wizState = { step: 1, material: null, operation: null, selectedBit: null, settings: null };
+
+function getSyncConfig() {
+  try { return JSON.parse(localStorage.getItem(SYNC_KEY)); } catch(e) { return null; }
+}
 
 function loadBits() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -21,6 +29,74 @@ function getNextBitId() {
   return BITS.length ? Math.max(...BITS.map(b => b.id)) + 1 : 1;
 }
 
+async function fetchBitsFromGitHub() {
+  const cfg = getSyncConfig();
+  if (!cfg) return null;
+  try {
+    const resp = await fetch(`${GH_API}/repos/${cfg.repo}/contents/${BITS_PATH}`, {
+      headers: { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    fileSha = data.sha;
+    const content = atob(data.content.replace(/\n/g, ''));
+    return JSON.parse(content);
+  } catch(e) {
+    console.error('GitHub fetch failed:', e);
+    return null;
+  }
+}
+
+async function pushBitsToGitHub() {
+  const cfg = getSyncConfig();
+  if (!cfg) return false;
+  try {
+    if (!fileSha) {
+      const resp = await fetch(`${GH_API}/repos/${cfg.repo}/contents/${BITS_PATH}`, {
+        headers: { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        fileSha = data.sha;
+      }
+    }
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(BITS, null, 2) + '\n')));
+    const body = {
+      message: `Update bit inventory (${BITS.length} bits)`,
+      content: content,
+      branch: 'main'
+    };
+    if (fileSha) body.sha = fileSha;
+    const resp = await fetch(`${GH_API}/repos/${cfg.repo}/contents/${BITS_PATH}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${cfg.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.message || `HTTP ${resp.status}`);
+    }
+    const result = await resp.json();
+    fileSha = result.content.sha;
+    showSyncStatus('connected', 'Synced');
+    return true;
+  } catch(e) {
+    console.error('GitHub push failed:', e);
+    showSyncStatus('error', 'Sync failed: ' + e.message);
+    return false;
+  }
+}
+
+function showSyncStatus(state, text) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  el.innerHTML = `<span class="sync-badge ${state}"><span class="sync-dot"></span>${text}</span>`;
+}
+
 async function init() {
   const [bitsRes, matsRes, catalogRes] = await Promise.all([
     fetch('./data/bits.json').then(r => r.json()),
@@ -28,15 +104,65 @@ async function init() {
     fetch('./data/all-bits.json').then(r => r.json())
   ]);
   DEFAULT_BITS = bitsRes;
-  BITS = loadBits() || [...bitsRes];
   ALL_BITS_CATALOG = catalogRes;
   MATERIALS = matsRes;
+
+  const cfg = getSyncConfig();
+  if (cfg) {
+    showSyncStatus('connected', 'Syncing...');
+    const remoteBits = await fetchBitsFromGitHub();
+    if (remoteBits) {
+      BITS = remoteBits;
+      saveBitsToStorage();
+      showSyncStatus('connected', 'Synced');
+    } else {
+      BITS = loadBits() || [...bitsRes];
+      showSyncStatus('error', 'Sync failed, using local data');
+    }
+    const tokenInput = document.getElementById('gh-token');
+    const repoInput = document.getElementById('gh-repo');
+    if (tokenInput) tokenInput.value = cfg.token;
+    if (repoInput) repoInput.value = cfg.repo;
+  } else {
+    BITS = loadBits() || [...bitsRes];
+    showSyncStatus('offline', 'Local only');
+  }
 
   renderMaterialList();
   renderBitsScreen();
   setupNav();
   setupOperationButtons();
   setupBitFormToggle();
+}
+
+function saveSyncSettings() {
+  const token = document.getElementById('gh-token').value.trim();
+  const repo = document.getElementById('gh-repo').value.trim();
+  if (!token || !repo) { alert('Please fill in both fields.'); return; }
+  localStorage.setItem(SYNC_KEY, JSON.stringify({ token, repo }));
+  fileSha = null;
+  const result = document.getElementById('sync-test-result');
+  result.innerHTML = 'Testing connection...';
+  fetchBitsFromGitHub().then(bits => {
+    if (bits) {
+      BITS = bits;
+      saveBitsToStorage();
+      renderBitsScreen();
+      result.innerHTML = '<span style="color:var(--success)">Connected! Loaded ' + bits.length + ' bits from GitHub.</span>';
+      showSyncStatus('connected', 'Synced');
+    } else {
+      result.innerHTML = '<span style="color:var(--danger)">Failed to connect. Check your token and repo name.</span>';
+      showSyncStatus('error', 'Connection failed');
+    }
+  });
+}
+
+function clearSyncSettings() {
+  localStorage.removeItem(SYNC_KEY);
+  fileSha = null;
+  document.getElementById('gh-token').value = '';
+  document.getElementById('sync-test-result').innerHTML = '<span style="color:var(--text-light)">Disconnected. Using local storage only.</span>';
+  showSyncStatus('offline', 'Local only');
 }
 
 function setupNav() {
@@ -674,6 +800,10 @@ function saveBit() {
   saveBitsToStorage();
   renderBitsScreen();
   hideAddBitForm();
+  if (getSyncConfig()) {
+    showSyncStatus('connected', 'Saving...');
+    pushBitsToGitHub();
+  }
 }
 
 function editBit(id) {
@@ -687,6 +817,10 @@ function deleteBit(id) {
   BITS = BITS.filter(b => b.id !== id);
   saveBitsToStorage();
   renderBitsScreen();
+  if (getSyncConfig()) {
+    showSyncStatus('connected', 'Saving...');
+    pushBitsToGitHub();
+  }
 }
 
 init();

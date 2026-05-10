@@ -252,6 +252,7 @@
       </div>
     </div>
 
+    <div id="sync-status"></div>
     <div id="bits-list"></div>
     <div class="missing-bits">
       <h3>Consider Adding</h3>
@@ -262,6 +263,27 @@
         <li><strong>90-degree V-bit</strong> — Wider/bolder lettering</li>
       </ul>
     </div>
+
+    <details class="ref-section sync-settings" id="sync-settings">
+      <summary>Sync Settings</summary>
+      <div class="sync-body">
+        <p>Connect to GitHub to sync your bit inventory across devices. Changes you make on any device will be saved to your repo.</p>
+        <div class="form-group">
+          <label for="gh-token">GitHub Personal Access Token</label>
+          <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+          <span class="form-hint">Needs <code>repo</code> scope. Create one at GitHub &gt; Settings &gt; Developer settings &gt; Personal access tokens.</span>
+        </div>
+        <div class="form-group">
+          <label for="gh-repo">Repository</label>
+          <input type="text" id="gh-repo" value="karel314/cnc-guide" placeholder="owner/repo">
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-secondary" onclick="clearSyncSettings()">Disconnect</button>
+          <button class="btn btn-primary" onclick="saveSyncSettings()">Save &amp; Sync</button>
+        </div>
+        <div id="sync-test-result"></div>
+      </div>
+    </details>
   </main>
 
   <!-- REFERENCE SCREEN -->

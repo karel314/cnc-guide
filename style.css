@@ -759,6 +759,69 @@ body {
   border-top: 1px solid var(--border);
 }
 
+/* Sync */
+.sync-settings {
+  margin-top: 16px;
+}
+.sync-body {
+  padding: 14px 16px;
+}
+.sync-body p {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 12px;
+}
+.form-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  margin-top: 4px;
+}
+.form-hint code {
+  background: var(--primary-bg);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  color: var(--primary);
+}
+#sync-status {
+  margin-bottom: 10px;
+}
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+.sync-badge.connected {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.sync-badge.offline {
+  background: var(--bg);
+  color: var(--text-lighter);
+}
+.sync-badge.error {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.sync-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.sync-badge.connected .sync-dot { background: var(--success); }
+.sync-badge.offline .sync-dot { background: var(--text-lighter); }
+.sync-badge.error .sync-dot { background: var(--danger); }
+#sync-test-result {
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .card-grid { grid-template-columns: 1fr; }
