@@ -43,6 +43,7 @@
 - **Alternative senders:** CNCjs (USB serial), any GRBL-compatible sender
 - **Stepper drivers:** 6x TMC2209
 - **Probe port:** GPIO 36 (last input port)
+- **Probe hardware:** XYZ touch probe block (conductive metal block, normally-open switch). Wired signal + ground only (NO 5V). Previously a V1E Tiny Touch Plate (0.5mm) — now upgraded to an XYZ probe. Config is identical for both: `pin: gpio.36:low`. Only the probe offset value changes.
 
 ### Essential Commands
 
@@ -63,13 +64,35 @@
 | `~` | Cycle start / resume |
 | `Ctrl+X` | Soft reset |
 
-### Z-Probe Procedure
-1. Clip ground wire to the bit
-2. Place touchplate on workpiece surface
-3. Send `G38.2 Z-25 F100 P[thickness]` (thickness = touchplate thickness in mm)
-4. Bit probes down until contact, Z zero is set at workpiece top
-5. Probe result reported as `[PRB:X,Y,Z:1]` (1 = success)
-6. Remove touchplate and ground wire
+### Z-Probe Procedure (XYZ touch probe)
+
+The user uses an **XYZ touch probe block**. For Z, place the block ON TOP of the
+workpiece and probe down onto its top surface. The Z offset = the **measured height
+of the block** (measure with calipers — cheap blocks vary). This replaces the old
+Tiny Touch Plate's fixed 0.5mm.
+
+1. Clip the ground wire to the bit, place the block on the workpiece top
+2. **Verify wiring first:** touch the clip to the block by hand, send `?`, confirm
+   `Pn:P` appears in the status (then clears on release)
+3. Probe with a two-stage macro:
+   ```gcode
+   G21 G91
+   G38.2 Z-25 F150        ; fast seek
+   G0 Z2                  ; back off
+   G38.2 Z-4 F40          ; slow, accurate
+   G90
+   G10 L20 P1 Z[BLOCK_HEIGHT]   ; e.g. Z10 — NOT a G38 P-word; set zero AFTER probing
+   G0 Z15
+   ```
+4. Result: Z0 = top of workpiece. Probe success reported as `[PRB:X,Y,Z:1]`
+5. Remove the block and ground wire
+
+**Note:** `G38.2` does NOT take a P-word for plate thickness in FluidNC/GRBL. Always
+set the offset separately with `G10 L20 P1 Z[height]` after the probe completes.
+
+X/Y probing is possible with the block but limited on FluidNC/Jackpot (no edge-find
+routine). Recommend Z-only probing; set X/Y manually. Full guide:
+`references/xyz-probe-fluidnc.md`.
 
 ---
 

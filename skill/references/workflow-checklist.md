@@ -65,15 +65,30 @@ This is the complete workflow from design to finished part on the Lowrider V4 wi
 - [ ] Send `G92 X0 Y0` to set X/Y zero at current position
 - [ ] Alternatively, use `G10 L20 P1 X0 Y0` for persistent zero
 
-### 2f. Z-Probe (Set Z Zero)
+### 2f. Z-Probe (Set Z Zero) — XYZ touch probe
 - [ ] Clip the probe ground wire to the bit
-- [ ] Place the touchplate on the TOP surface of the workpiece
-- [ ] Measure your touchplate thickness with calipers if you haven't already
-- [ ] Send `G38.2 Z-25 F100 P[thickness]` (replace [thickness] with your plate's mm)
+- [ ] Place the XYZ probe block on the TOP surface of the workpiece
+- [ ] Know your block height (`BLOCK_HEIGHT`) — measure with calipers; cheap blocks vary
+- [ ] **Wiring check:** touch the clip to the block by hand, send `?`, confirm `Pn:P` shows
+- [ ] Probe down (two-stage for accuracy):
+  ```gcode
+  G21 G91
+  G38.2 Z-25 F150
+  G0 Z2
+  G38.2 Z-4 F40
+  G90
+  G10 L20 P1 Z[BLOCK_HEIGHT]
+  G0 Z15
+  ```
 - [ ] Verify the probe was successful: look for `[PRB:...:1]` (1 = success)
-- [ ] Remove the touchplate from the workpiece
+- [ ] Z0 is now the top of the workpiece
+- [ ] Remove the block from the workpiece
 - [ ] Remove the ground wire from the bit
 - [ ] Jog Z up slightly to confirm it moves freely
+
+> Note: `G38.2` has no P-word for thickness — always set the offset with
+> `G10 L20 P1 Z[BLOCK_HEIGHT]` after the probe. Full guide:
+> `references/xyz-probe-fluidnc.md`
 
 ### 2g. Verify Setup (Dry Run)
 - [ ] Jog to a few key positions on the workpiece to verify X/Y alignment
@@ -130,9 +145,9 @@ When switching to the next G-code file with a different bit:
 3. [ ] Loosen the collet nut, remove the old bit
 4. [ ] Insert the new bit with the correct collet, tighten firmly
 5. [ ] **RE-PROBE Z** — the new bit is a different length!
-   - Place touchplate on the SAME reference surface as before
-   - Send `G38.2 Z-25 F100 P[thickness]`
-   - Remove touchplate and ground wire
+   - Place the XYZ probe block on the SAME reference surface as before
+   - Re-run the Z-probe macro (see section 2f), set `G10 L20 P1 Z[BLOCK_HEIGHT]`
+   - Remove the block and ground wire
 6. [ ] **DO NOT re-zero X/Y** — those coordinates are still valid
 7. [ ] **Set the Kress dial** to the correct RPM for the new bit/operation
 8. [ ] **Turn on the spindle** before starting the next file
