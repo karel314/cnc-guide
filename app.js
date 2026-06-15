@@ -561,11 +561,12 @@ function renderWorkflowChecklist() {
         { text: 'Tighten collet firmly with two wrenches' },
         { text: 'Jog to X/Y zero position on workpiece' },
         { text: 'Set X/Y zero: G92 X0 Y0', warning: 'Must match your CAM origin (usually front-left corner)!' },
-        { text: 'Clip probe wire to bit' },
-        { text: 'Place touchplate on workpiece surface' },
-        { text: 'Z-probe: G38.2 Z-25 F100 P[plate thickness]' },
+        { text: 'Clip probe wire to bit, place XYZ probe block on workpiece' },
+        { text: 'Wiring check: touch clip to block, send ?, confirm Pn:P', warning: 'Verify polarity before lowering Z!' },
+        { text: 'Z-probe: G38.2 Z-25 F150, back off, G38.2 Z-4 F40' },
+        { text: 'Set zero: G10 L20 P1 Z[block height]', warning: 'Measure block height with calipers — cheap blocks vary!' },
         { text: 'Verify probe success: [PRB:...:1]' },
-        { text: 'Remove touchplate and probe wire' }
+        { text: 'Remove block and probe wire' }
       ]
     },
     {

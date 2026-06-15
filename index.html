@@ -318,7 +318,7 @@
           <tr><td><code>$X</code></td><td>Clear alarm / unlock</td></tr>
           <tr><td><code>G92 X0 Y0</code></td><td>Set X/Y zero (volatile)</td></tr>
           <tr><td><code>G10 L20 P1 X0 Y0 Z0</code></td><td>Set zero (persistent)</td></tr>
-          <tr><td><code>G38.2 Z-25 F100 P[t]</code></td><td>Z-probe (t=plate thickness mm)</td></tr>
+          <tr><td><code>G38.2 Z-25 F100</code></td><td>Z-probe down (set offset after with G10)</td></tr>
           <tr><td><code>$J=X10 F500</code></td><td>Jog X +10mm at 500mm/min</td></tr>
           <tr><td><code>?</code></td><td>Status report</td></tr>
           <tr><td><code>!</code></td><td>Feed hold (PAUSE)</td></tr>
@@ -343,15 +343,16 @@
     </details>
 
     <details class="ref-section">
-      <summary>Z-Probe Procedure</summary>
+      <summary>Z-Probe Procedure (XYZ probe)</summary>
       <ol class="ref-steps">
-        <li>Clip ground wire to the bit</li>
-        <li>Place touchplate on TOP of workpiece</li>
-        <li>Send: <code>G38.2 Z-25 F100 P[thickness]</code></li>
+        <li>Clip ground wire to the bit, place the block on TOP of workpiece</li>
+        <li>Wiring check: touch clip to block, send <code>?</code>, confirm <code>Pn:P</code></li>
+        <li>Probe: <code>G38.2 Z-25 F150</code> → <code>G0 Z2</code> → <code>G38.2 Z-4 F40</code></li>
         <li>Wait for contact — look for <code>[PRB:...:1]</code></li>
-        <li>Remove touchplate and ground wire</li>
-        <li>Jog Z up slightly to verify</li>
+        <li>Set zero: <code>G10 L20 P1 Z[block height]</code> (measure with calipers!)</li>
+        <li>Remove block and ground wire, jog Z up to verify</li>
       </ol>
+      <p class="ref-note">No P-word on G38.2 — set the offset with G10 after probing. Full guide: xyz-probe-fluidnc.md</p>
     </details>
 
     <details class="ref-section">
