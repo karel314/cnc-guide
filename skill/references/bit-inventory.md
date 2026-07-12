@@ -10,8 +10,8 @@ Only use this file if WebFetch fails.
 |----------|------|-----|-------|---------|-------------|--------|---------|------|----------|
 | 1 | 1/4" Downcut Finisher | 2x | 1/4" (6.35mm) | 1/4" (6.35mm) | 25.4mm (1") | 2 | DLC | Downcut spiral | Pocketing in hard wood, clean top edges, profile cuts where tabs aren't needed (chips hold part down) |
 | 2 | 1/8" Downcut | 2x | 1/8" (3.175mm) | 2mm | 12mm | 2 | DLC | Downcut spiral | Detail work, small pockets, clean top surface on plywood, engraving |
-| 3 | 1/8" Upcut | 10x | 1/8" (3.175mm) | 1/8" (3.175mm) | 17mm | 1-2 | Nano Blue | Upcut spiral | General purpose, drilling, through-cuts, chip evacuation, deep pockets. Your workhorse bit. |
-| 4 | 8mm 60-degree V-Bit | 2x | 8mm | 60 deg | N/A | 3 | None (carbide) | V-bit chamfer | V-carving, lettering, engraving, chamfering edges, inlay work |
+| 3 | 1/8" Upcut | 10x | 1/8" (3.175mm) | 1/8" (3.175mm) | 17mm | 2 | Nano Blue | Upcut spiral | General purpose, drilling, through-cuts, chip evacuation, deep pockets. Your workhorse bit. |
+| 4 | 8mm 60-degree V-Bit | 2x | 8mm | 8mm (60 deg cone) | 6.9mm | 3 | Nano coating | V-bit chamfer | V-carving, lettering, engraving, chamfering edges, inlay work |
 | 5 | 1" Surfacing Bit | 3x | 1/4" (6.35mm) | 1" (25.4mm) | 1/4" (6.35mm) | 3 | None | Surfacing / fly cutter | Flattening spoilboard, surfacing epoxy pours, flattening large areas |
 
 ## Collets Needed
