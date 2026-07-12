@@ -5,7 +5,9 @@
 - **Type:** Open-source DIY CNC router, belt-driven, 2.5-axis
 - **Frame:** 3D-printed parts on 1" EMT conduit rails (29.5mm, 30mm, or 32mm OD)
 - **XZ Plates:** Aluminum, 6.5mm thick
-- **Working area:** User-configurable, up to full 4x8 ft sheet (1220x2440mm)
+- **THIS BUILD: X 610mm x Y 1220mm, Z 50mm usable. Homes to the FRONT LEFT corner.**
+  (Half-sheet machine. Use these numbers, not the generic maximums below.)
+- **Working area (design max):** User-configurable, up to full 4x8 ft sheet (1220x2440mm)
 - **Z travel:** ~100mm total, ~50mm usable cutting depth (100mm with drop table)
 - **Z leadscrews:** T8, 145mm+, 4-start, 2mm pitch (8mm/rev)
 - **Z linear rails:** 4x MGN12H, 150mm
@@ -44,6 +46,24 @@
 - **Stepper drivers:** 6x TMC2209
 - **Probe port:** GPIO 36 (last input port)
 - **Probe hardware:** XYZ touch probe block (conductive metal block, normally-open switch). Wired signal + ground only (NO 5V). Previously a V1E Tiny Touch Plate (0.5mm) — now upgraded to an XYZ probe. Config is identical for both: `pin: gpio.36:low`. Only the probe offset value changes.
+
+### FluidTouch Pendant — the primary machine interface
+
+The user has a **FluidTouch** touchscreen pendant (jeyeager65/FluidTouch on an Elecrow CrowPanel
+7" ESP32-S3). It connects to FluidNC over **WiFi/WebSocket** (port 81 on FluidNC v3.x, port 80 on
+v4.0+) — not USB.
+
+**This is how jobs are actually run.** FluidTouch browses G-code files on the FluidNC SD card,
+FluidNC flash, or the panel's own SD card, and tells the Jackpot to run one. The controller
+executes the file itself — nothing is streamed from a PC, so a WiFi drop or a sleeping laptop
+cannot stall a job mid-cut.
+
+It provides: jogging (buttons + analog joystick), homing, automated probing, file browsing, job
+start/pause/stop, feed override, and up to 9 file-based macros per machine.
+
+**Consequence for CAM:** MillMage/Estlcam are used to *generate files*, not to drive the machine.
+See `references/millmage-setup.md`. Never have a PC sender and FluidTouch both sending commands
+at the same time — FluidNC accepts both channels and they will interleave.
 
 ### Essential Commands
 
