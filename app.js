@@ -262,6 +262,7 @@ function getCatalogScore(catalogEntry, op, matId) {
 
 function ownsEquivalent(catalogEntry) {
   return BITS.some(b => {
+    if (b.owned === false) return false;
     if (b.type !== catalogEntry.type) return false;
     const diaDiff = Math.abs((b.cut_diameter_mm || 0) - (catalogEntry.cut_diameter_mm || 0));
     if (catalogEntry.type === 'vbit') {
@@ -276,7 +277,8 @@ function recommendBit() {
   const op = wizState.operation;
   const matId = mat ? mat.id : 'softwood';
 
-  const scored = BITS.map(b => ({ bit: b, score: scoreBitForJob(b, op, matId) }))
+  const scored = BITS.filter(b => b.owned !== false)
+    .map(b => ({ bit: b, score: scoreBitForJob(b, op, matId) }))
     .filter(s => s.score > 0)
     .sort((a, b) => b.score - a.score);
 
@@ -662,15 +664,17 @@ function toggleCheck(el) {
   }
 }
 
-function renderBitsScreen() {
-  const list = document.getElementById('bits-list');
-  list.innerHTML = BITS.map(b => `
-    <div class="bit-card">
+function bitCardHtml(b) {
+  const toBuy = b.owned === false;
+  return `
+    <div class="bit-card${toBuy ? ' bit-card-tobuy' : ''}">
       <div class="bit-card-header">
         <h3>${escHtml(b.name)}</h3>
         <div>
           <span class="bit-nr">NR ${b.id}</span>
-          <span class="bit-qty">${b.qty}x</span>
+          ${toBuy
+            ? `<span class="bit-qty bit-qty-tobuy">${b.priority ? escHtml(b.priority) : 'to buy'}</span>`
+            : `<span class="bit-qty">${b.qty}x</span>`}
         </div>
       </div>
       <div class="bit-specs">
@@ -682,14 +686,28 @@ function renderBitsScreen() {
         <span>Collet: <strong>${b.collet_mm}mm</strong></span>
         ${b.flute_length_mm ? `<span>Flute len: <strong>${b.flute_length_mm}mm</strong></span>` : ''}
         ${b.angle_deg ? `<span>Angle: <strong>${b.angle_deg}°</strong></span>` : ''}
+        ${toBuy && b.vendor ? `<span>Source: <strong>${escHtml(b.vendor)}${b.model ? ' ' + escHtml(b.model) : ''}</strong></span>` : ''}
       </div>
       <div class="bit-notes">${escHtml(b.notes)}</div>
       <div class="bit-card-actions">
+        ${toBuy && b.url ? `<a class="btn-icon" href="${escHtml(b.url)}" target="_blank" rel="noopener">Shop</a>` : ''}
         <button class="btn-icon" onclick="editBit(${b.id})">Edit</button>
         <button class="btn-icon btn-delete" onclick="deleteBit(${b.id})">Delete</button>
       </div>
     </div>
-  `).join('');
+  `;
+}
+
+function renderBitsScreen() {
+  const list = document.getElementById('bits-list');
+  const owned = BITS.filter(b => b.owned !== false);
+  const toBuy = BITS.filter(b => b.owned === false);
+  let html = owned.map(bitCardHtml).join('');
+  if (toBuy.length) {
+    html += `<h3 class="bits-section-title">To Buy (${toBuy.length})</h3>`
+      + toBuy.map(bitCardHtml).join('');
+  }
+  list.innerHTML = html;
 }
 
 function escHtml(str) {
@@ -792,6 +810,10 @@ function saveBit() {
     const idx = BITS.findIndex(b => b.id === parseInt(editId));
     if (idx !== -1) {
       bit.id = parseInt(editId);
+      // Preserve to-buy metadata that the edit form doesn't expose
+      ['owned', 'priority', 'vendor', 'model', 'url'].forEach(k => {
+        if (BITS[idx][k] !== undefined) bit[k] = BITS[idx][k];
+      });
       BITS[idx] = bit;
     }
   } else {
