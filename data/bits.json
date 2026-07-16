@@ -116,17 +116,17 @@
         "id": 6,
         "name": "6mm Compression (EU)",
         "type": "compression",
-        "shank_mm": 6.0,
-        "shank_label": "6mm",
+        "shank_mm": 8.0,
+        "shank_label": "8mm",
         "cut_diameter_mm": 6.0,
         "cut_diameter_label": "6mm",
-        "flute_length_mm": 28,
+        "flute_length_mm": 24,
         "flutes": 2,
-        "coating": "uncoated",
+        "coating": "uncoated (SPE-X option)",
         "vendor": "SpeTool EU",
-        "model": "W07501 (EU-FT2FC-D6-L28)",
-        "url": "https://spetools.com/en-eu/products/spetool-eu-solid-carbide-flush-trim-compression-spiral-6mm-dia-x-6mm-shank-x-28mm-cutting-length-x-75mm-long-router-bit",
-        "collet_mm": 6.0,
+        "model": "W02504",
+        "url": "https://spetools.com/en-eu/products/spetool-eu-sc-compression-2-fl-6mm-dia-x-24mm-cl-x-8mm-shank-x-75mm-ovl-router-bit",
+        "collet_mm": 8.0,
         "qty": 0,
         "owned": false,
         "priority": "high",
@@ -134,7 +134,7 @@
             "profile",
             "plywood"
         ],
-        "notes": "PRIORITY BUY. Clean top AND bottom edge of plywood in one pass. EU verified 2026-07-16: EUR 30.70, 25 in stock. 6mm shank -> needs the 6mm collet. 28mm cutting length clears 18mm ply. No SPE-X coating in EU (uncoated only)."
+        "notes": "PRIORITY BUY. True compression (up+down), NO bearing. Clean top AND bottom edge of plywood in one pass. EU verified 2026-07-16: W02504, 6mm dia / 8mm shank / 24mm cutting length / 75mm OVL, 2FL. EUR 49.16 uncoated or EUR 51.21 SPE-X (worth +EUR2 for ~2.5x life). 8mm shank -> uses the Kress's included 8mm collet you already own (no new collet needed). 24mm cutting length clears 18mm ply. Replaces the earlier W07501, which is a bearing-guided flush-trim bit and wrong for CNC profiling."
     },
     {
         "id": 10,
