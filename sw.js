@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'cnc-guide-v5';
+const CACHE_VERSION = 'cnc-guide-v6';
 const ASSETS = [
   './',
   './index.html',

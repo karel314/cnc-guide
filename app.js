@@ -579,6 +579,7 @@ function renderWorkflowChecklist() {
         { text: `Correct bit installed: ${bit.name} (NR ${bit.id})` },
         { text: 'Collet is tight' },
         { text: 'Nothing in the toolpath (cables, clamps, tools)' },
+        { text: 'Close MillMage AND all FluidNC Web UI browser tabs', warning: 'Only the FluidTouch pendant should talk to the controller. A second client causes mid-job freezes.' },
         { text: 'Emergency stop is accessible' }
       ]
     },

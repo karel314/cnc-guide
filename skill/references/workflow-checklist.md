@@ -106,6 +106,9 @@ This is the complete workflow from design to finished part on the Lowrider V4 wi
 - [ ] Correct bit installed (matches the G-code file you're about to run)
 - [ ] Collet is tight
 - [ ] Nothing in the toolpath (cables, clamps, dust hose, tools)
+- [ ] **Close MillMage AND every FluidNC Web UI browser tab** — only the FluidTouch
+  pendant should be talking to the controller. A second connected client makes FluidNC
+  interleave channels and can freeze the machine mid-job (confirmed 2026-07-13).
 - [ ] Know where your emergency stop is
 
 ### Start Cutting
