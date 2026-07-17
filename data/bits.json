@@ -153,12 +153,33 @@
         "collet_mm": 6.0,
         "qty": 0,
         "owned": false,
-        "priority": "high",
+        "priority": "medium",
         "best_for": [
             "engraving",
             "lettering",
             "chamfer"
         ],
-        "notes": "PRIORITY BUY. Bold/wide lettering + edge chamfering, complements your 60 V-bit. EU verified 2026-07-16: W06509, solid carbide 6mm dia, 90 deg, 3-flute TiAlN, 6mm shank. Bolder option = W06502 (12mm dia, 6mm shank). V-carving needs Estlcam. Confirm direct product URL on the linked collection page."
+        "notes": "MEDIUM priority. Only adds value over Karel's owned 1/8\" 90 V-bits for BOLD/wide/deep lettering (90 V maxes at depth = dia/2: ~1.6mm for 1/8\", ~3mm for this 6mm). EU verified 2026-07-16: W06509, solid carbide 6mm dia, 90 deg, 3-flute TiAlN, 6mm shank. Bolder still = W06502 (12mm dia). V-carving needs Estlcam (MillMage Core can't). Confirm direct product URL on the linked collection page."
+    },
+    {
+        "id": 15,
+        "name": "1/8\" 90 deg V-Bit",
+        "type": "vbit",
+        "angle_deg": 90,
+        "shank_mm": 3.175,
+        "shank_label": "1/8\"",
+        "cut_diameter_mm": 3.175,
+        "cut_diameter_label": "1/8\"",
+        "flutes": 1,
+        "coating": "none",
+        "vendor": "unknown",
+        "collet_mm": 3.175,
+        "qty": 8,
+        "owned": true,
+        "best_for": [
+            "engraving",
+            "lettering"
+        ],
+        "notes": "Owned, unknown brand. Single flute, no coating, 1/8\" tip. Good for normal/small 90-deg V-carving and engraving. Max clean depth ~1.6mm (dia/2) before the V tops out. Tool library: '#15 1/8 90deg V single [Dial 3]'. Feeds: dial 3 (~17,600) softwood/ply, feed 800 / plunge 150; hardwood dial 2-3, feed 500-600. Gentle plunge - V tips are fragile."
     }
 ]
