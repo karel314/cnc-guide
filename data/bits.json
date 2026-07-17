@@ -129,12 +129,12 @@
         "collet_mm": 8.0,
         "qty": 0,
         "owned": false,
-        "priority": "high",
+        "priority": "medium",
         "best_for": [
             "profile",
             "plywood"
         ],
-        "notes": "PRIORITY BUY. True compression (up+down), NO bearing. Clean top AND bottom edge of plywood in one pass. EU verified 2026-07-16: W02504, 6mm dia / 8mm shank / 24mm cutting length / 75mm OVL, 2FL. EUR 49.16 uncoated or EUR 51.21 SPE-X (worth +EUR2 for ~2.5x life). 8mm shank -> uses the Kress's included 8mm collet you already own (no new collet needed). 24mm cutting length clears 18mm ply. Replaces the earlier W07501, which is a bearing-guided flush-trim bit and wrong for CNC profiling."
+        "notes": "MEDIUM priority - only worth it when BOTH faces of the cut show. True compression (up+down), NO bearing. EU verified 2026-07-16: W02504, 6mm dia / 8mm shank / 24mm cutting length / 75mm OVL, 2FL. EUR 49.16 uncoated or EUR 51.21 SPE-X. 8mm shank uses the Kress's included 8mm collet. IMPORTANT technique: with light 2mm stepdowns a compression bit behaves like an upcut - the top edge is cut on the first shallow pass by the UPCUT tip, so the top face frays and you never use the downcut half. To get clean-both-faces you MUST: rough with light passes leaving ~0.4mm radial (Stock to Leave), then ONE full-depth finishing pass at 0 stock so both zones engage the whole wall at once. For hidden-bottom work (shelves, spoilboard-backed), the #1 downcut is simpler and cleaner - buy this only when you have both-faces-show parts."
     },
     {
         "id": 10,
