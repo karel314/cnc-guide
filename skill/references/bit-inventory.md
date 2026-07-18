@@ -13,6 +13,18 @@ Only use this file if WebFetch fails.
 | 3 | 1/8" Upcut | 10x | 1/8" (3.175mm) | 1/8" (3.175mm) | 17mm | 2 | Nano Blue | Upcut spiral | General purpose, drilling, through-cuts, chip evacuation, deep pockets. Your workhorse bit. |
 | 4 | 8mm 60-degree V-Bit | 2x | 8mm | 8mm (60 deg cone) | 6.9mm | 3 | Nano coating | V-bit chamfer | V-carving, lettering, engraving, chamfering edges, inlay work |
 | 5 | 1" Surfacing Bit | 3x | 1/4" (6.35mm) | 1" (25.4mm) | 1/4" (6.35mm) | 3 | None | Surfacing / fly cutter | Flattening spoilboard, surfacing epoxy pours, flattening large areas |
+| 15 | 1/8" 90-degree V-Bit | ~8x | 1/8" (3.175mm) | 1/8" (3.175mm) | — | 1 | None | V-bit (single flute) | Normal/small 90-deg V-carving & engraving. Max clean depth ~1.6mm (dia/2). Dial 3, feed 800 / plunge 150 in softwood/ply. Send true V-carving to Estlcam. |
+
+## To-Buy Wishlist (not yet owned)
+
+Tracked in the app with `owned: false`. Sourced from the **SpeTool EU store** (verify each SKU there — it's a different, mostly-metric catalog from the US site):
+
+| NR | Bit | Priority | EU SKU | Notes |
+|----|-----|----------|--------|-------|
+| 6 | 6mm Compression | Medium | W02504 (6mm dia / 8mm shank / 24mm CL) | Clean both faces, NO bearing. Needs a full-depth finishing pass over ~0.4mm radial to beat a plain downcut; only worth it when both faces show. 8mm shank uses the owned 8mm collet. |
+| 10 | 90-degree V-Bit | Medium | W06509 (6mm dia, 6mm shank, 3FL) | Only for BOLD/wide lettering the 1/8" (NR15) can't reach. |
+
+Remaining wishlist (NR 7,8,9,11,12,13,14) still to be sourced on the EU store; NR8/9 (3D ballnose) deferred until a 3D CAM workflow exists. See the app's `data/bits.json` for the live list.
 
 ## Collets Needed
 

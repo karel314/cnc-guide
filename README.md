@@ -15,7 +15,7 @@ A browser-based tool you use next to your CNC machine. Four screens:
   3. Get a bit recommendation from your inventory — with a "better bit available" suggestion if a bit you don't own would be more suitable
   4. Get a complete settings card (Kress dial position, feed rate, plunge rate, depth per pass, tabs, CAM notes)
   5. Interactive workflow checklist (CAM setup → machine setup → safety check → run → finishing) with checkboxes that auto-advance phases
-- **My Bits** — Your bit inventory with add/edit/delete. Persisted in localStorage.
+- **My Bits** — Your bit inventory with add/edit/delete, plus a separate **To Buy** list (dashed cards, priority tag, "Shop" link). Persisted in localStorage. To-buy bits are excluded from job recommendations, so unowned bits are never suggested as in-stock and still surface as "better bit available."
 - **Reference** — Quick-access tables: Kress speed dial chart, Jackpot G-code commands, chip quality guide, Z-probe procedure, V1E golden rule starting settings, workholding methods, collet reference
 
 ## Smart Bit Recommendations
@@ -23,6 +23,12 @@ A browser-based tool you use next to your CNC machine. Four screens:
 The app scores every bit you own (0–10) against a master catalog of 16 common CNC bit types, based on the operation and material. If a bit you don't own would score higher, it shows a "Better bit available" card with a visual score comparison — so you know what to consider buying.
 
 Master catalog covers: upcut, downcut, compression, O-flute, V-bits (30°/60°/90°), ball nose, surfacing, and straight flute in common sizes.
+
+## Owned vs To-Buy Bits
+
+Bits in `data/bits.json` carry an `owned` flag. Entries with `owned: false` are a **shopping wishlist** — they render in a separate "To Buy" section on the My Bits screen (with `priority`, `vendor`/`model`, and a `url` "Shop" link) and are skipped by the recommendation engine so they're never treated as in-stock. Everything without the flag (or `owned: true`) is owned inventory. Editing a to-buy bit in the app preserves its `owned`/`priority`/`vendor`/`model`/`url` metadata.
+
+Sourcing note: bits are bought from the **SpeTool EU store** (a smaller, mostly metric-shank catalog — not the US site at a different URL), so each to-buy SKU is verified on the EU store before it's added.
 
 ## Machine Setup
 
@@ -45,7 +51,7 @@ cnc-guide-app/
 ├── sw.js               # Service worker for offline PWA
 ├── manifest.json       # PWA manifest
 ├── data/
-│   ├── bits.json       # Default bit inventory (5 starter bits)
+│   ├── bits.json       # Bit inventory: owned bits + a "To Buy" wishlist (owned:false)
 │   ├── materials.json  # Material definitions with feeds & speeds per bit
 │   └── all-bits.json   # Master catalog of 16 common CNC bits with suitability scores
 └── icons/
